@@ -31,10 +31,10 @@ class RepositoryImplementation implements Repository {
   }
 
   @override
-  Future<Either<Failure, ProductModel>> getProductDetails() async {
+  Future<Either<Failure, ProductModel>> getProductDetails({required int id}) async {
     try {
       Map<String, dynamic> data = await apiServices.getRequestSimple(
-        url: "https://task-two-plum-44.vercel.app/api/products/6",
+        url: "https://task-two-plum-44.vercel.app/api/products/$id",
       );
 
       ProductModel productModel = ProductModel.fromJson(data);

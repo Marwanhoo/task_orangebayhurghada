@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_orangebayhurghada/core/utils/app_theme.dart';
 import 'package:task_orangebayhurghada/core/utils/service_locator.dart';
 import 'package:task_orangebayhurghada/features/home/view/ui/home_screen.dart';
+import 'package:task_orangebayhurghada/features/product_details/viewmodel/product_details_cubit.dart';
 import 'package:task_orangebayhurghada/features/products/viewmodel/products_cubit.dart';
 
 void main() async {
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => getIt.get<ProductsCubit>()),
-        //BlocProvider(create: (context) => getIt.get<BookDetailsCubit>()),
+        BlocProvider(create: (context) => getIt.get<ProductDetailsCubit>()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

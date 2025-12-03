@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_orangebayhurghada/core/utils/app_strings.dart';
 import 'package:task_orangebayhurghada/data/model/product_model.dart';
+import 'package:task_orangebayhurghada/features/product_details/view/ui/product_details_screen.dart';
 import 'package:task_orangebayhurghada/features/products/viewmodel/products_cubit.dart';
 import 'package:task_orangebayhurghada/features/products/viewmodel/products_state.dart';
 
@@ -27,7 +28,9 @@ class _ProductsGridViewState extends State<ProductsGridView> {
       },
       builder: (context, state) {
         if (state is ProductsLoadingState) {
-          return SliverToBoxAdapter(child: Center(child: CircularProgressIndicator()));
+          return SliverToBoxAdapter(
+            child: Center(child: CircularProgressIndicator()),
+          );
         } else if (state is ProductsFailureState) {
           return SliverToBoxAdapter(child: Text(state.error));
         } else if (state is ProductsSuccessState) {
@@ -44,11 +47,11 @@ class _ProductsGridViewState extends State<ProductsGridView> {
               ProductModel product = products[index];
               return GestureDetector(
                 onTap: () {
-                  // Navigator.of(context).push(
-                  //   MaterialPageRoute(
-                  //     builder: (_) => BookDetailsScreen(id: product.id),
-                  //   ),
-                  // );
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => ProductDetailsScreen(id: product.id),
+                    ),
+                  );
                 },
                 child: Container(
                   decoration: BoxDecoration(
