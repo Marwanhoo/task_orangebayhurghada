@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:task_orangebayhurghada/core/utils/app_strings.dart';
 import 'package:task_orangebayhurghada/features/product_details/viewmodel/product_details_cubit.dart';
 import 'package:task_orangebayhurghada/features/product_details/viewmodel/product_details_state.dart';
@@ -28,12 +29,23 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       body: BlocConsumer<ProductDetailsCubit, ProductDetailsStates>(
         listener: (context, state) {},
         builder: (context, state) {
-          if (state is ProductDetailsLoadingState) {
-            return Center(child: CircularProgressIndicator());
-          } else if (state is ProductDetailsFailureState) {
-            return Text(state.error);
-          } else if (state is ProductDetailsSuccessState) {
-            return Stack(
+          if (state is ProductDetailsFailureState) {
+            return Center(child: Text(state.error));
+          }
+
+          final isLoading = state is ProductDetailsLoadingState;
+
+          if (!isLoading && state is! ProductDetailsSuccessState) {
+            return const SizedBox();
+          }
+
+          return Skeletonizer(
+            enabled: isLoading,
+            effect: ShimmerEffect(
+              baseColor: Colors.grey[300]!,
+              highlightColor: Colors.grey[100]!,
+            ),
+            child: Stack(
               children: [
                 CustomScrollView(
                   slivers: [
@@ -51,7 +63,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       ),
                       actions: [
                         IconButton(
-                          icon: CircleAvatar(
+                          icon: const CircleAvatar(
                             backgroundColor: Colors.white,
                             child: Icon(Icons.favorite, color: Colors.black),
                           ),
@@ -60,14 +72,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         const SizedBox(width: 10),
                       ],
                       flexibleSpace: FlexibleSpaceBar(
-                        background: Image.network(
-                          AppStrings.marwanHoo,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) =>
-                              const Center(
-                                child: Icon(Icons.broken_image, size: 50),
+                        background: isLoading
+                            ? Container(color: Colors.white)
+                            : Image.network(
+                                AppStrings.marwanHoo,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    const Center(
+                                      child: Icon(Icons.broken_image, size: 50),
+                                    ),
                               ),
-                        ),
                       ),
                     ),
                     SliverToBoxAdapter(
@@ -78,16 +92,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             top: Radius.circular(24),
                           ),
                         ),
-                        transform: Matrix4.translationValues(
-                          0,
-                          -20,
-                          0,
-                        ), // Overlap effect
+                        transform: Matrix4.translationValues(0, -20, 0),
                         padding: const EdgeInsets.all(20),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Center Handle (Visual indicator)
                             Center(
                               child: Container(
                                 width: 50,
@@ -99,13 +108,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               ),
                             ),
                             const SizedBox(height: 20),
-
-                            // Brand & Rating
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  "BRAND",
+                                const Text(
+                                  "BRAND NAME",
                                   style: TextStyle(
                                     color: Colors.orange,
                                     fontWeight: FontWeight.bold,
@@ -121,14 +128,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       size: 20,
                                     ),
                                     const SizedBox(width: 4),
-                                    Text(
-                                      "r",
-                                      style: const TextStyle(
+                                    const Text(
+                                      "4.5",
+                                      style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                     Text(
-                                      " reviews",
+                                      " (100 reviews)",
                                       style: TextStyle(
                                         color: Colors.grey[500],
                                         fontSize: 12,
@@ -140,10 +147,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             ),
                             const SizedBox(height: 10),
 
-                            // Title
-                            Text(
-                              "Product Name",
-                              style: const TextStyle(
+                            const Text(
+                              "Loading Product Name...",
+                              style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
                                 height: 1.2,
@@ -151,19 +157,18 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             ),
                             const SizedBox(height: 15),
 
-                            // Attributes Grid (Material, Length, Category)
+                            // Attributes Grid
                             Row(
                               children: [
-                                _buildAttributeChip("Material", "N/A"),
+                                _buildAttributeChip("Material", "Cotton"),
                                 const SizedBox(width: 10),
-                                _buildAttributeChip("Length", "N/A"),
+                                _buildAttributeChip("Length", "Medium"),
                                 const SizedBox(width: 10),
-                                _buildAttributeChip("Category", "N/A"),
+                                _buildAttributeChip("Category", "Casual"),
                               ],
                             ),
                             const SizedBox(height: 20),
 
-                            // Description
                             const Text(
                               "Description",
                               style: TextStyle(
@@ -172,16 +177,18 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               ),
                             ),
                             const SizedBox(height: 8),
-                            Text(
-                              "No description available.",
-                              style: TextStyle(
-                                color: Colors.grey[600],
-                                height: 1.5,
-                                fontSize: 14,
-                              ),
-                            ),
+                            isLoading
+                                ? const Bone.multiText(lines: 3)
+                                : Text(
+                                    "No description available.",
+                                    style: TextStyle(
+                                      color: Colors.grey[600],
+                                      height: 1.5,
+                                      fontSize: 14,
+                                    ),
+                                  ),
 
-                            const SizedBox(height: 100), // Space for bottom bar
+                            const SizedBox(height: 100),
                           ],
                         ),
                       ),
@@ -199,9 +206,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       color: Colors.white,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withValues(
-                            alpha: 0.05,
-                          ), // Updated .withValues
+                          color: Colors.black.withValues(alpha: 0.05),
                           blurRadius: 10,
                           offset: const Offset(0, -5),
                         ),
@@ -215,16 +220,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "originalPrice",
+                              "\$999.99",
                               style: TextStyle(
                                 color: Colors.grey[400],
                                 decoration: TextDecoration.lineThrough,
                                 fontSize: 14,
                               ),
                             ),
-                            Text(
-                              "currentPrice",
-                              style: const TextStyle(
+                            const Text(
+                              "\$120.00",
+                              style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,
@@ -236,9 +241,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         // Buy Button
                         Expanded(
                           child: ElevatedButton(
-                            onPressed: () {
-                              // TODO: Add to cart logic
-                            },
+                            onPressed: () {},
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.orange,
                               padding: const EdgeInsets.symmetric(vertical: 16),
@@ -262,10 +265,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   ),
                 ),
               ],
-            );
-          } else {
-            return SliverToBoxAdapter(child: Container());
-          }
+            ),
+          );
         },
       ),
     );

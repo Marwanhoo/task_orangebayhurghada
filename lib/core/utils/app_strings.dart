@@ -8,6 +8,7 @@ class AppStrings {
 
   // API
   static const String baseUrl = "https://task-two-plum-44.vercel.app";
+  static const String banners = "https://store.mansouracademy.com/api/v1/banners";
   static const String products = "products";
   static const String api = "api";
 }
