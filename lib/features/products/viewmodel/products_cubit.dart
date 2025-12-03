@@ -12,15 +12,11 @@ class ProductsCubit extends Cubit<ProductsStates> {
     final result = await repository.getProducts();
     result.fold(
       (failure) {
-        print("=================");
-        print(failure);
-        emit(ProductsFailureState(
-          error: failure.message,
-        ));
+        emit(ProductsFailureState(error: failure.message));
       },
-      (books) => emit(ProductsSuccessState(
-        products: books,
-      )),
+      (books) {
+        emit(ProductsSuccessState(products: books));
+      },
     );
   }
 }
