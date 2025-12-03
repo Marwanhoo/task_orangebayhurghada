@@ -3,8 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:task_orangebayhurghada/core/utils/api_services.dart';
 import 'package:task_orangebayhurghada/data/repository/repository.dart';
 import 'package:task_orangebayhurghada/data/repository/repository_implementation.dart';
-import 'package:task_orangebayhurghada/features/books_details/viewmodel/book_details_cubit.dart';
-import 'package:task_orangebayhurghada/features/products/viewmodel/products/products_cubit.dart';
+import 'package:task_orangebayhurghada/features/products/viewmodel/products_cubit.dart';
 
 final getIt = GetIt.instance;
 

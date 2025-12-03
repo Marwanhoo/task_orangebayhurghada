@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:task_orangebayhurghada/core/utils/app_strings.dart';
+import 'package:task_orangebayhurghada/features/products/view/ui/product_screen.dart';
 
-class CustomTabBar extends StatelessWidget {
-  const CustomTabBar({super.key});
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        appBar: AppBar(title: const Text("Clothes")),
+        appBar: AppBar(
+          actionsPadding: EdgeInsetsDirectional.only(end: 10.0),
+          title: Text("Clothes"),
+          actions: [SvgPicture.asset(AppStrings.iconCart)],
+        ),
         body: Column(
           children: [
             Container(
@@ -38,9 +45,9 @@ class CustomTabBar extends StatelessWidget {
               ),
             ),
 
-            const Expanded(
+            Expanded(
               child: TabBarView(
-                children: [ProductSection(), ReviewSection(), HelpSection()],
+                children: [ProductScreen(), ReviewSection(), HelpSection()],
               ),
             ),
           ],
@@ -76,15 +83,7 @@ class CustomTabBar extends StatelessWidget {
   }
 }
 
-class ProductSection extends StatelessWidget {
-  const ProductSection({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text("Product Details", style: TextStyle(fontSize: 20)),
-    );
-  }
-}
+
 
 class ReviewSection extends StatelessWidget {
   const ReviewSection({super.key});

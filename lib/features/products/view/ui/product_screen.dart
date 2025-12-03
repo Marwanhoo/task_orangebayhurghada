@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:task_orangebayhurghada/core/utils/app_strings.dart';
-import 'package:task_orangebayhurghada/features/products/view/products/products_grid_view.dart';
+import 'package:task_orangebayhurghada/features/products/view/ui/products_grid_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class DemoScreen extends StatelessWidget {
-  const DemoScreen({super.key});
+class ProductScreen extends StatelessWidget {
+  const ProductScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actionsPadding: EdgeInsetsDirectional.only(end: 10.0),
-        title: Text("Clothes"),
-        actions: [SvgPicture.asset(AppStrings.iconCart)],
-      ),
+
+      appBar: AppBar(toolbarHeight: 0),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: CustomScrollView(
@@ -23,15 +20,6 @@ class DemoScreen extends StatelessWidget {
           slivers: [
             //SliverToBoxAdapter(child: CustomTabBar()),
             SliverToBoxAdapter(child: CustomPageView()),
-            SliverPadding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
-              sliver: SliverToBoxAdapter(
-                child: Text(
-                  "Programming Books",
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
-              ),
-            ),
             SliverToBoxAdapter(child: ProductDetailsCard()),
             SliverToBoxAdapter(child: ProductDescriptionCard()),
             SliverToBoxAdapter(
@@ -169,12 +157,12 @@ class CustomPageView extends StatelessWidget {
                 ),
               );
             },
-            itemCount: 3,
+            itemCount: 4,
           ),
         ),
         SmoothPageIndicator(
           controller: pageController,
-          count: 3,
+          count: 4,
           effect: const WormEffect(
             activeDotColor: Colors.red,
             dotColor: Colors.grey,
@@ -188,8 +176,6 @@ class CustomPageView extends StatelessWidget {
   }
 }
 
-
-
 class ProductDetailsCard extends StatelessWidget {
   const ProductDetailsCard({super.key});
 
@@ -202,7 +188,7 @@ class ProductDetailsCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
@@ -227,29 +213,8 @@ class ProductDetailsCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Discount Badge (Red Capsule)
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: const Text(
-                  "60%",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-              const Spacer(),
-              // Price Column
               Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
                     "63.000 KWD",
@@ -270,6 +235,25 @@ class ProductDetailsCard extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
+              const Spacer(),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: const Text(
+                  "60%",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
               ),
             ],
           ),
@@ -328,10 +312,19 @@ class ProductDetailsCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   // Star Icons
-                  ...List.generate(
-                    5,
-                    (index) =>
-                        const Icon(Icons.star, color: Colors.amber, size: 18),
+                  RatingBar.builder(
+                    itemSize: 16,
+                    //initialRating: 3,
+                    //minRating: 1,
+                    direction: Axis.horizontal,
+                    //allowHalfRating: true,
+                    itemCount: 5,
+                    // itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                    itemBuilder: (context, _) =>
+                        Icon(Icons.star, color: Colors.amber),
+                    onRatingUpdate: (rating) {
+                      //print(rating);
+                    },
                   ),
                 ],
               ),
@@ -354,17 +347,15 @@ class ProductDescriptionCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 5),
           ),
         ],
       ),
-      // ClipRRect ensures the ExpansionTile ripple effect stays inside rounded corners
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: Theme(
-          // This theme override removes the top/bottom borders that appear when expanded
           data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
           child: ExpansionTile(
             tilePadding: const EdgeInsets.symmetric(

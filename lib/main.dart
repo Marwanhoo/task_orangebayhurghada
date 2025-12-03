@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_orangebayhurghada/core/utils/app_theme.dart';
 import 'package:task_orangebayhurghada/core/utils/service_locator.dart';
-import 'package:task_orangebayhurghada/features/custom_tab_bar.dart';
-import 'package:task_orangebayhurghada/features/products/viewmodel/products/products_cubit.dart';
+import 'package:task_orangebayhurghada/features/home/view/ui/home_screen.dart';
+import 'package:task_orangebayhurghada/features/products/viewmodel/products_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         theme: lightTheme,
         darkTheme: darkTheme,
         themeMode: ThemeMode.light,
-        home: CustomTabBar(),
+        home: HomeScreen(),
       ),
     );
   }

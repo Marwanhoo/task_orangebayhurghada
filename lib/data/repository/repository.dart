@@ -4,7 +4,5 @@ import 'package:task_orangebayhurghada/data/model/product_model.dart';
 
 abstract class Repository {
   Future<Either<Failure, List<ProductModel>>> getProducts();
-  // Future<Either<Failure, BookModel>> getBookDetails({required String id});
-  // Future<Either<Failure, List<BookModel>>> getSimilarBooks({required String subject});
-  // Future<Either<Failure, List<BookModel>>>  fetchNewestBooks();
+  Future<Either<Failure, ProductModel>> getProductDetails();
 }

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_orangebayhurghada/core/utils/app_strings.dart';
 import 'package:task_orangebayhurghada/data/model/product_model.dart';
-import 'package:task_orangebayhurghada/features/products/viewmodel/products/products_cubit.dart';
-import 'package:task_orangebayhurghada/features/products/viewmodel/products/products_state.dart';
+import 'package:task_orangebayhurghada/features/products/viewmodel/products_cubit.dart';
+import 'package:task_orangebayhurghada/features/products/viewmodel/products_state.dart';
 
 class ProductsGridView extends StatefulWidget {
   const ProductsGridView({super.key});
