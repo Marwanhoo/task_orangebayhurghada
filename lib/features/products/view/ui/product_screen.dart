@@ -43,18 +43,17 @@ class ProductScreen extends StatelessWidget {
       ),
       persistentFooterButtons: [
         Container(
-          width: double.infinity, // Ensures the row takes full width
+          width: double.infinity,
           padding: const EdgeInsets.symmetric(vertical: 4),
           child: Row(
             children: [
-              // 1. Buy Now Button (Expanded)
               Expanded(
                 child: SizedBox(
-                  height: 50, // Fixed height matches the design
+                  height: 50,
                   child: ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFFF6F00), // Deep Orange
+                      backgroundColor: const Color(0xFFFF6F00),
                       foregroundColor: Colors.white,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
@@ -74,21 +73,15 @@ class ProductScreen extends StatelessWidget {
 
               const SizedBox(width: 16),
 
-              // 2. Quantity Selector
               Row(
                 children: [
-                  // Plus Button
                   buildQtyButton(Icons.add, () {}),
-
-                  // Quantity Count
                   const SizedBox(width: 12),
                   const Text(
                     "1",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(width: 12),
-
-                  // Minus Button
                   buildQtyButton(Icons.remove, () {}),
                 ],
               ),
