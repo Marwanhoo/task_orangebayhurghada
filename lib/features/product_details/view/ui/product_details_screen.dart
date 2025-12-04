@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:task_orangebayhurghada/core/utils/app_strings.dart';
+import 'package:task_orangebayhurghada/data/model/product_model.dart';
 import 'package:task_orangebayhurghada/features/product_details/viewmodel/product_details_cubit.dart';
 import 'package:task_orangebayhurghada/features/product_details/viewmodel/product_details_state.dart';
 
@@ -33,18 +34,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             return Center(child: Text(state.error));
           }
 
-          final isLoading = state is ProductDetailsLoadingState;
+          bool isLoading = state is ProductDetailsLoadingState;
 
-          if (!isLoading && state is! ProductDetailsSuccessState) {
-            return const SizedBox();
-          }
+          ProductModel product = state is ProductDetailsSuccessState
+              ? state.productModel
+              : dummyProduct;
 
           return Skeletonizer(
             enabled: isLoading,
-            effect: ShimmerEffect(
-              baseColor: Colors.grey[300]!,
-              highlightColor: Colors.grey[100]!,
-            ),
             child: Stack(
               children: [
                 CustomScrollView(
@@ -72,16 +69,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         const SizedBox(width: 10),
                       ],
                       flexibleSpace: FlexibleSpaceBar(
-                        background: isLoading
-                            ? Container(color: Colors.white)
-                            : Image.network(
-                                AppStrings.marwanHoo,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) =>
-                                    const Center(
-                                      child: Icon(Icons.broken_image, size: 50),
-                                    ),
-                              ),
+                        background: Image.network(
+                          product.image,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Image.network(
+                              AppStrings.marwanHoo,
+                              fit: BoxFit.cover,
+                            );
+                          },
+                        ),
                       ),
                     ),
                     SliverToBoxAdapter(
@@ -128,8 +125,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       size: 20,
                                     ),
                                     const SizedBox(width: 4),
-                                    const Text(
-                                      "4.5",
+                                     Text(
+                                      "${product.averageRating}",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -147,8 +144,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             ),
                             const SizedBox(height: 10),
 
-                            const Text(
-                              "Loading Product Name...",
+                            Text(
+                              product.name,
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
@@ -157,19 +154,18 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             ),
                             const SizedBox(height: 15),
 
-                            // Attributes Grid
                             Row(
                               children: [
-                                _buildAttributeChip("Material", "Cotton"),
+                                buildAttributeChip("Material", product.material),
                                 const SizedBox(width: 10),
-                                _buildAttributeChip("Length", "Medium"),
+                                buildAttributeChip("Length", product.length),
                                 const SizedBox(width: 10),
-                                _buildAttributeChip("Category", "Casual"),
+                                buildAttributeChip("Category", product.brand),
                               ],
                             ),
                             const SizedBox(height: 20),
 
-                            const Text(
+                             Text(
                               "Description",
                               style: TextStyle(
                                 fontSize: 18,
@@ -177,16 +173,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               ),
                             ),
                             const SizedBox(height: 8),
-                            isLoading
-                                ? const Bone.multiText(lines: 3)
-                                : Text(
-                                    "No description available.",
-                                    style: TextStyle(
-                                      color: Colors.grey[600],
-                                      height: 1.5,
-                                      fontSize: 14,
-                                    ),
-                                  ),
+                            Text(
+                              product.description,
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                height: 1.5,
+                                fontSize: 14,
+                              ),
+                            ),
 
                             const SizedBox(height: 100),
                           ],
@@ -214,21 +208,20 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     ),
                     child: Row(
                       children: [
-                        // Price Column
                         Column(
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "\$999.99",
+                              "${product.discountPrice}",
                               style: TextStyle(
                                 color: Colors.grey[400],
                                 decoration: TextDecoration.lineThrough,
                                 fontSize: 14,
                               ),
                             ),
-                            const Text(
-                              "\$120.00",
+                             Text(
+                              product.price,
                               style: TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
@@ -238,7 +231,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           ],
                         ),
                         const SizedBox(width: 20),
-                        // Buy Button
                         Expanded(
                           child: ElevatedButton(
                             onPressed: () {},
@@ -272,7 +264,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 
-  Widget _buildAttributeChip(String label, String value) {
+  Widget buildAttributeChip(String label, String value) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(

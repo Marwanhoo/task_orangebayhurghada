@@ -44,7 +44,6 @@ class ProductModel extends Equatable {
   }
 
   @override
-  // TODO: implement props
   List<Object?> get props => [
     id,
     name,
@@ -59,3 +58,17 @@ class ProductModel extends Equatable {
     isFavorite,
   ];
 }
+
+final ProductModel dummyProduct = ProductModel(
+  id: 0,
+  name: 'Loading Product Name...',
+  description: 'Loading description text lines for skeleton effect...',
+  image: '',
+  price: '00.00',
+  discountPrice: '00.00',
+  brand: 'Brand',
+  material: 'Material',
+  length: 'Length',
+  averageRating: 0,
+  isFavorite: false,
+);
