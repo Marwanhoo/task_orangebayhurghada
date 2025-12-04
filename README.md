@@ -84,4 +84,12 @@ Follow these steps to get the project up and running on your local machine.
     flutter run
     ```
 
+## 📥 Download APK
 
+You can download the compiled `.apk` file directly to test the application on an Android device.
+
+[![Download APK](https://img.shields.io/badge/Download_APK-Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://github.com/Marwanhoo/task_orangebayhurghada/releases/download/first/app-release.apk)
+
+* **Direct Link:** [app-release.apk](https://github.com/Marwanhoo/task_orangebayhurghada/releases/download/first/app-release.apk)
+* **Release Tag:** `first`
+* **View All Releases:** [GitHub Releases Page](https://github.com/Marwanhoo/task_orangebayhurghada/releases)
