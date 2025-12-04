@@ -6,7 +6,7 @@ class ProductModel extends Equatable {
   final String description;
   final String image;
   final String price;
-  final String discountPrice;
+  final String? discountPrice;
   final String brand;
   final String material;
   final String length;
@@ -33,8 +33,8 @@ class ProductModel extends Equatable {
       name: json['name'],
       description: json['description'],
       image: json['image'],
-      price: json['price'] ?? "",
-      discountPrice: json['discount_price'] ?? "",
+      price: json['price'],
+      discountPrice: json['discount_price'],
       brand: json['brand'],
       material: json['material'],
       length: json['length'],

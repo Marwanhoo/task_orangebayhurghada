@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:task_orangebayhurghada/core/utils/app_strings.dart';
 import 'package:task_orangebayhurghada/data/model/banner_model.dart';
 import 'package:task_orangebayhurghada/features/banners/viewmodel/banners_cubit.dart';
 import 'package:task_orangebayhurghada/features/banners/viewmodel/banners_state.dart';
@@ -95,6 +94,7 @@ class _BannerScreenState extends State<BannerScreen> {
                     itemCount: banners.length,
                   ),
                 ),
+                const SizedBox(height: 16),
                 SmoothPageIndicator(
                   controller: pageController,
                   count: banners.length,
@@ -106,6 +106,7 @@ class _BannerScreenState extends State<BannerScreen> {
                   ),
                   onDotClicked: (index) {},
                 ),
+                const SizedBox(height: 16),
               ],
             ),
           );
