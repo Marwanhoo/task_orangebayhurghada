@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:task_orangebayhurghada/core/utils/app_strings.dart';
 import 'package:task_orangebayhurghada/data/model/banner_model.dart';
@@ -16,16 +17,36 @@ class BannerScreen extends StatefulWidget {
 
 class _BannerScreenState extends State<BannerScreen> {
   @override
+  void initState() {
+    BlocProvider.of<BannersCubit>(context).getBanners();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     PageController pageController = PageController();
     return BlocConsumer<BannersCubit, BannersStates>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         if (state is BannersLoadingState) {
           return SliverToBoxAdapter(
-            child: Center(child: CircularProgressIndicator()),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    height: MediaQuery.of(context).size.height / 5,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           );
         } else if (state is BannersFailureState) {
           return SliverToBoxAdapter(child: Text(state.error));
@@ -71,7 +92,7 @@ class _BannerScreenState extends State<BannerScreen> {
                         ),
                       );
                     },
-                    itemCount: 4,
+                    itemCount: banners.length,
                   ),
                 ),
                 SmoothPageIndicator(

@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:task_orangebayhurghada/core/utils/api_services.dart';
 import 'package:task_orangebayhurghada/data/repository/repository.dart';
 import 'package:task_orangebayhurghada/data/repository/repository_implementation.dart';
+import 'package:task_orangebayhurghada/features/banners/viewmodel/banners_cubit.dart';
 import 'package:task_orangebayhurghada/features/product_details/viewmodel/product_details_cubit.dart';
 import 'package:task_orangebayhurghada/features/products/viewmodel/products_cubit.dart';
 
@@ -26,5 +27,9 @@ void setup() {
 
   getIt.registerFactory<ProductDetailsCubit>(() {
     return ProductDetailsCubit(repository: getIt.get());
+  });
+
+  getIt.registerFactory<BannersCubit>(() {
+    return BannersCubit(repository: getIt.get());
   });
 }
